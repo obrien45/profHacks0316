@@ -8,6 +8,8 @@ public class GestureManager : MonoBehaviour
     GestureConcat concatonator;
     Controller controller;
     Frame currentFrame;
+    public bool leftHand;
+    public bool isSingleHand;
     public string currentGesture;
     bool isDoneCalibrating;
     public Dictionary<string, Frame> gestures;
@@ -76,6 +78,26 @@ public class GestureManager : MonoBehaviour
             closeness = -1.0f;
         }
         return closeness;
+    }
+
+    float singleGestureMatch(Frame otherFrame)
+    {
+        List<Hand> otherHands = otherFrame.Hands;
+        List<Hand> currentHands = currentFrame.Hands;
+        foreach(Hand currentHand in currentHands)
+        {
+            if(currentHand.IsLeft && leftHand || currentHand.IsRight && !leftHand)
+            {
+                foreach(Hand otherHand in otherHands)
+                {
+                    float match = matchHands(otherHand, currentHand);
+                    if (match != -1.0f)
+                        return match;
+                }
+            }
+    
+        }
+        return -1.0f;
     }
 
     float gestureMatch(Frame otherFrame)
@@ -185,7 +207,15 @@ public class GestureManager : MonoBehaviour
                 //print(entry.Key);
                 //print(entry.Value.ToString());
                 // do something with entry.Value or entry.Key
-                float distance = gestureMatch(entry.Value);
+                float distance;
+                if (isSingleHand)
+                {
+                    distance = singleGestureMatch(entry.Value);
+                }
+                else
+                {
+                    distance = gestureMatch(entry.Value);
+                }
                 if (distance >= 0 && distance < minDistance)
                 {
                     minDistance = distance;
