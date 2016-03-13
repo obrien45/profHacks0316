@@ -55,7 +55,7 @@ public class GestureManager : MonoBehaviour
             Vector otherFingerPos = otherFinger.TipPosition;
             Vector currentFingerPos = currentFinger.TipPosition;
             float currentDist = currentFingerPos.DistanceTo(currentHandPos);
-            float otherDist = otherHandPos.DistanceTo(otherHandPos);
+            float otherDist = otherFingerPos.DistanceTo(otherHandPos);
             if (currentDist > 1.3 * otherDist)
             {
                 couldBeMatch = false;
@@ -78,11 +78,8 @@ public class GestureManager : MonoBehaviour
 
     float gestureMatch(Frame otherFrame)
     {
-        float angleThreshold = 0.4f;
-        float closeness = 200.0f;
         List<Hand> otherHands = otherFrame.Hands;
         List<Hand> currentHands = currentFrame.Hands;
-        bool isMatch = false;
         if (otherHands.Count == 1)
         {
             foreach(Hand currentHand in currentHands)
@@ -146,7 +143,7 @@ public class GestureManager : MonoBehaviour
                 Hand currentHandTwo = currentHands[1];
                 Hand savedHandOne = otherHands[0];
                 Hand savedHandTwo = otherHands[1];
-                float firstHandMatch = matchHands(currentHandOne, savedHandOne;
+                float firstHandMatch = matchHands(currentHandOne, savedHandOne);
                 if(firstHandMatch != -1)
                 {
                     float twoTwoHandMatch = matchHands(currentHandTwo, savedHandTwo);

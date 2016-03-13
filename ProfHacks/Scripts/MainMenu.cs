@@ -20,45 +20,45 @@ public class MainMenu : MonoBehaviour
         //exitText = exitText.GetComponent<Button> ();
         //quitMenu = quitMenu.GetComponent<Canvas> ();
         //creditsCanvas = creditsCanvas.GetComponent<Canvas> ();
-        quitMenu.enabled = false;
+        quitMenu.GetComponent<Canvas>().enabled = false;
         creditsCanvas.GetComponent<Canvas>().enabled = false;
         returnToMenu.enabled = false;
     }
 
-    public void ExitPress()
+    public void OpenExitMenu()
     {
         quitMenu.enabled = true;
         startText.enabled = false;
         exitText.enabled = false;
     }
 
-    public void NoPress()
+    public void CloseExitMenu()
     {
         quitMenu.enabled = false;
         startText.enabled = true;
         exitText.enabled = true;
     }
 
-    public void CreditsPressed()
+    public void OpenCredits()
     {
         creditsCanvas.enabled = true;
         returnToMenu.enabled = true;
     }
 
-    public void ReturnToMenu()
+    public void CloseCredits()
     {
         creditsCanvas.enabled = false;
-        NoPress();
+        returnToMenu.enabled = false;
     }
 
     // Update is called once per frame
 
-    public void startButton()
+    public void StartGame()
     {
         SceneManager.LoadScene("CalibrationLevel");
     }
 
-    public void exitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }
