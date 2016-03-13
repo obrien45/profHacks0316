@@ -39,7 +39,7 @@ public class GestureManager : MonoBehaviour
 
     public float matchHands(Hand savedHand, Hand currentHand)
     {
-        float angleThreshold = 0.4f;
+        float angleThreshold = 0.5f;
         float closeness = -1.0f;
         Vector otherHandDir = savedHand.Direction;
         Vector otherHandPos = savedHand.PalmPosition;
