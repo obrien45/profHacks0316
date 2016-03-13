@@ -12,6 +12,7 @@ public class GestureRecognizer : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         controller = new Controller();
+        manager = GetComponent<GestureManager>();
 	}
 
     public string getNextGestureName()
@@ -23,7 +24,7 @@ public class GestureRecognizer : MonoBehaviour {
 	void Update () {
         if (gestureNames.Count > 0)
         {
-            if (Input.GetKeyDown("F"))
+            if (Input.GetKeyDown("f"))
             {
                 manager.addGesture(gestureNames[0], controller.Frame());
                 //add this frame to the saved gesture list

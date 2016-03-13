@@ -10,7 +10,7 @@ public class GestureManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        gestures = new Dictionary<string, Frame>();
 	}
 
     public void activate()
