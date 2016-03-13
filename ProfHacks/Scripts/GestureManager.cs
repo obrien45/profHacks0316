@@ -5,7 +5,7 @@ using Leap;
 
 public class GestureManager : MonoBehaviour
 {
-
+    GestureConcat concatonator;
     Controller controller;
     Frame currentFrame;
     public string currentGesture;
@@ -24,6 +24,8 @@ public class GestureManager : MonoBehaviour
     public void activate()
     {
         isDoneCalibrating = true;
+        concatonator = new GestureConcat();
+        concatonator.manager = this;
     }
 
     //add a gesture to the saved gestures, with the given name
