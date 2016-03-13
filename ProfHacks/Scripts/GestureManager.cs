@@ -26,8 +26,6 @@ public class GestureManager : MonoBehaviour
     public void activate()
     {
         isDoneCalibrating = true;
-        concatonator = new GestureConcat();
-        concatonator.manager = this;
     }
 
     //add a gesture to the saved gestures, with the given name

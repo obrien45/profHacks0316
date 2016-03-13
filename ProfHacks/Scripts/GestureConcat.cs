@@ -3,30 +3,35 @@ using System.Collections;
 
 public class GestureConcat : MonoBehaviour {
 
-    public GestureManager manager;
+    public GestureManager charManager;
+    public GestureManager controlManager;
     public string result;
-    public string lastGesture;
+    public string lastCharString;
     public string clear;
+    public float timer;
     // Use this for initialization
 	void Start () 
     {
         clear = " ";
         result = "";
-        lastGesture = manager.currentGesture;
+        lastCharString = charManager.currentGesture;
+        timer = 0.0f;
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        
-        string currGesture = manager.currentGesture;
-        if (currGesture.Equals(clear))
+        timer += Time.deltaTime;
+        string charString = charManager.getCurrentGesture();
+        string commandString = controlManager.getCurrentGesture();
+        if (commandString.Equals("clear"))
         {
             result = "";
         }
-        if (!lastGesture.Equals(currGesture))
+        else if (!lastCharString.Equals(charString) && !charString.Equals("no match") && commandString.Equals("continue entering") && timer > 1.5f)
         {
-            result += currGesture;
+            result += charString;
+            timer = 0.0f;
         }
 	}
 }

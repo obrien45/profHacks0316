@@ -55,7 +55,7 @@ public class MainMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("CalibrationLevel");
+        SceneManager.LoadScene("ASLmap");
     }
 
     public void ExitGame()

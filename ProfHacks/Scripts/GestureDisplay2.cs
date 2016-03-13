@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class GestureDisplay2 : MonoBehaviour
 {
     public GestureConcat gestConcat;
-    public GameObject gestureManager;
 
     // Use this for initialization
     void Start()
