@@ -29,6 +29,10 @@ public class GestureRecognizer : MonoBehaviour {
                 manager.addGesture(gestureNames[0], controller.Frame());
                 //add this frame to the saved gesture list
                 gestureNames.RemoveAt(0);
+                if(gestureNames.Count == 0)
+                {
+                    Destroy(this);
+                }
             }
         }
         else
