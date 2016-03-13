@@ -5,7 +5,6 @@ using Leap;
 public class Shield : MonoBehaviour {
 
     public GameObject gestureManager;
-    private Controller controller;
 
     // Use this for initialization
     void Start () {
