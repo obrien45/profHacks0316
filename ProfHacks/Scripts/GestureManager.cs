@@ -37,32 +37,42 @@ public class GestureManager : MonoBehaviour
         return currentGesture;
     }
 
-    bool gestureMatches(Frame otherFrame)
+    float gestureMatch(Frame otherFrame)
     {
-        float totalCloseness = 0;
+        float angleThreshold = 0.4f;
+        float closeness = 200.0f;
         List<Hand> otherHands = otherFrame.Hands;
         List<Hand> currentHands = currentFrame.Hands;
-
+        bool isMatch = false;
         foreach (Hand otherHand in otherHands)
         {
+            //return a float that is closeness only if match passes
             Vector otherHandDir = otherHand.Direction;
             foreach (Hand currentHand in currentHands)
             {
+                bool couldBeMatch = true;
                 Vector currentHandDir = currentHand.Direction;
                 for (int i = 0; i < otherHand.Fingers.Count; i++)
                 {
                     Finger otherFinger = otherHand.Fingers[i];
                     Finger currentFinger = currentHand.Fingers[i];
-                    Vector otherOffset = otherFinger.Direction - otherHandDir;
-                    Vector currentOffset = currentFinger.Direction - currentHandDir;
-                    totalCloseness += currentOffset.Dot(otherOffset);
+                    float otherAngle = otherFinger.Direction.AngleTo(otherHandDir);
+                    float currentAngle = currentFinger.Direction.AngleTo(currentHandDir);
+                    if (Mathf.Abs(otherAngle - currentAngle) > angleThreshold)
+                    {
+                        couldBeMatch = false;
+                    }
+                }
+                if(couldBeMatch)
+                {
+                    isMatch = true;
+                    closeness = Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
+                }else{
+                    closeness = -Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
                 }
             }
         }
-        if (totalCloseness < 10)
-            return true;
-        else
-            return false;
+        return closeness;
     }
 
     // Update is called once per frame
@@ -72,13 +82,16 @@ public class GestureManager : MonoBehaviour
         {
             currentFrame = controller.Frame();
             bool foundMatch = false;
+            float minDistance = 200.0f;
             foreach (KeyValuePair<string, Frame> entry in gestures)
             {
-                print(entry.Key);
-                print(entry.Value.ToString());
+                //print(entry.Key);
+                //print(entry.Value.ToString());
                 // do something with entry.Value or entry.Key
-                if (gestureMatches(entry.Value))
+                float distance = gestureMatch(entry.Value);
+                if (distance >= 0 && distance < minDistance)
                 {
+                    minDistance = distance;
                     foundMatch = true;
                     currentGesture = entry.Key;
                 }
