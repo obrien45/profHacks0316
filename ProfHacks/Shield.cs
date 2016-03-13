@@ -8,7 +8,6 @@ public class Shield : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        controller = new Controller();
         this.GetComponent<MeshRenderer>().enabled = false;
     }
 	

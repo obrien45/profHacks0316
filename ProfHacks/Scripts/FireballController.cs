@@ -22,12 +22,6 @@ public class FireballController : MonoBehaviour {
             {
                 fire.Play();
             }
-            foreach(Hand hand in controller.Frame().Hands)
-            {
-              
-                this.transform.position = controller.Frame().Hands[0].PalmPosition.ToVector3();
-                this.transform.rotation = Quaternion.LookRotation(controller.Frame().Hands[0].PalmPosition.ToVector3(), Vector3.up);
-            }
         }
         else if(!fire.isPaused)
         {

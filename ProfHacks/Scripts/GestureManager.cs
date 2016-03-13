@@ -60,10 +60,10 @@ public class GestureManager : MonoBehaviour
             Vector currentFingerPos = currentFinger.TipPosition;
             float currentDist = currentFingerPos.DistanceTo(currentHandPos);
             float otherDist = otherFingerPos.DistanceTo(otherHandPos);
-            if (currentDist > 1.3 * otherDist)
+           /* if (currentDist > 1.3 * otherDist)
             {
                 couldBeMatch = false;
-            }
+            }*/
             if (Mathf.Abs(otherAngle - currentAngle) > angleThreshold)
             {
                 couldBeMatch = false;
