@@ -9,6 +9,7 @@ public class FireballController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
         this.GetComponent<ParticleSystem>().Pause();
         controller = new Controller();
 	}
@@ -21,6 +22,7 @@ public class FireballController : MonoBehaviour {
             if(!fire.isPlaying)
             {
                 fire.Play();
+            
             }
         }
         else if(!fire.isPaused)
