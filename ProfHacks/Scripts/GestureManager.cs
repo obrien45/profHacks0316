@@ -47,24 +47,24 @@ public class GestureManager : MonoBehaviour
         {
             List<Vector> otherFingerOffsets = new List<Vector>();
             Vector otherHandCenter = otherHand.PalmPosition;
+            
             foreach(Finger otherFinger in otherHand.Fingers)
             {
-                Vector offset = otherFinger.Direction - otherHandCenter;
+                Vector offset = otherFinger.TipPosition - otherHandCenter;
                 otherFingerOffsets.Add(offset);
             }
             foreach(Hand currentHand in currentHands)
             {
                // List<Vector> currentFingerOffsets = new List<Vector>();
                 Vector currentHandCenter = currentHand.PalmPosition;
-                foreach (Finger currentFinger in currentHand.Fingers)
+                for (int i = 0; i < otherFingerOffsets.Count; i++)
                 {
-                    foreach (Vector difference in otherFingerOffsets)
-                    {
-                        Vector currentOffset = currentFinger.Direction - currentHandCenter;
-                        totalCloseness += currentOffset.Dot(difference);
-                    }
+                    Vector currentOffset = currentHand.Fingers[i].TipPosition - currentHandCenter;
+
+                    //totalCloseness += currentOffset.Dot(difference);
                 }
             }
+            
         }
         print(totalCloseness);
         if (totalCloseness < 10)
