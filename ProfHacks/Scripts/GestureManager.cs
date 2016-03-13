@@ -10,13 +10,13 @@ public class GestureManager : MonoBehaviour
     Frame currentFrame;
     public string currentGesture;
     bool isDoneCalibrating;
-    Dictionary<string, Frame> gestures;
+    public Dictionary<string, Frame> gestures;
     //maps name of each gesture (english word) to the gesture (ASL sign)
 
     // Use this for initialization
     void Start()
     {
-        Controller controller = new Controller();
+        controller = new Controller();
         isDoneCalibrating = false;
         gestures = new Dictionary<string, Frame>();
     }
@@ -30,6 +30,11 @@ public class GestureManager : MonoBehaviour
     public void addGesture(string name, Frame frame)
     {
         gestures.Add(name, frame);
+    }
+
+    public string getCurrentGesture()
+    {
+        return currentGesture;
     }
 
     bool gestureMatches(Frame otherFrame)
@@ -61,6 +66,7 @@ public class GestureManager : MonoBehaviour
                 }
             }
         }
+        print(totalCloseness);
         if (totalCloseness < 10)
             return true;
         else
@@ -72,11 +78,22 @@ public class GestureManager : MonoBehaviour
     {
         if (isDoneCalibrating)
         {
+            currentFrame = controller.Frame();
+            bool foundMatch = false;
             foreach (KeyValuePair<string, Frame> entry in gestures)
             {
+                print(entry.Key);
+                print(entry.Value.ToString());
                 // do something with entry.Value or entry.Key
                 if (gestureMatches(entry.Value))
-                    currentGesture = entry.Key;  
+                {
+                    foundMatch = true;
+                    currentGesture = entry.Key;
+                }
+            }
+            if(!foundMatch)
+            {
+                currentGesture = "no match";
             }
         }
     }

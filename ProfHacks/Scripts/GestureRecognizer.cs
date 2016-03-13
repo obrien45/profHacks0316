@@ -31,6 +31,7 @@ public class GestureRecognizer : MonoBehaviour {
                 gestureNames.RemoveAt(0);
                 if(gestureNames.Count == 0)
                 {
+                    manager.activate();
                     Destroy(this);
                 }
             }

@@ -6,10 +6,12 @@ public class CalibrationGUI : MonoBehaviour {
 
     public GameObject gestureManager;
     public GameObject gestureNameText;
+    public GameObject gestureDisplayCanvas;
 
 	// Use this for initialization
 	void Start () {
-	}
+        gestureDisplayCanvas.GetComponent<Canvas>().enabled = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,6 +23,7 @@ public class CalibrationGUI : MonoBehaviour {
         else
         {
             this.GetComponent<Canvas>().enabled = false;
+            gestureDisplayCanvas.GetComponent<Canvas>().enabled = true;
         }
 	}
 }
