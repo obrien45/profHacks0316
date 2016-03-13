@@ -21,8 +21,10 @@ public class GestureRecognizer : MonoBehaviour {
     {
         if (gestureNames.Count > 0)
             return gestureNames[0];
-        else
+        else if (secondaryGestureNames.Count > 0)
             return secondaryGestureNames[0];
+        else
+            return "none more";
     }
 	
 	// Update is called once per frame
@@ -31,7 +33,7 @@ public class GestureRecognizer : MonoBehaviour {
         {
             if (Input.GetKeyDown("f"))
             {
-                if (gestureNames.Count <= 0)
+                if (gestureNames.Count <= 0 && secondaryManager != null)
                 {
                     secondaryManager.addGesture(secondaryGestureNames[0], controller.Frame());
                     secondaryGestureNames.RemoveAt(0);
@@ -45,7 +47,8 @@ public class GestureRecognizer : MonoBehaviour {
                 if(gestureNames.Count == 0 && secondaryGestureNames.Count == 0)
                 {
                     manager.activate();
-                    secondaryManager.activate();
+                    if(secondaryManager != null)
+                        secondaryManager.activate();
                     Destroy(this);
                 }
             }
@@ -53,6 +56,8 @@ public class GestureRecognizer : MonoBehaviour {
         else
         {
             manager.activate();
+            if (secondaryManager != null)
+                secondaryManager.activate();
             Destroy(this);
         }
 	}
