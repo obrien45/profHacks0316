@@ -43,30 +43,22 @@ public class GestureManager : MonoBehaviour
         List<Hand> otherHands = otherFrame.Hands;
         List<Hand> currentHands = currentFrame.Hands;
 
-        foreach(Hand otherHand in otherHands)
+        foreach (Hand otherHand in otherHands)
         {
-            List<Vector> otherFingerOffsets = new List<Vector>();
-            Vector otherHandCenter = otherHand.PalmPosition;
-            
-            foreach(Finger otherFinger in otherHand.Fingers)
+            Vector otherHandDir = otherHand.Direction;
+            foreach (Hand currentHand in currentHands)
             {
-                Vector offset = otherFinger.TipPosition - otherHandCenter;
-                otherFingerOffsets.Add(offset);
-            }
-            foreach(Hand currentHand in currentHands)
-            {
-               // List<Vector> currentFingerOffsets = new List<Vector>();
-                Vector currentHandCenter = currentHand.PalmPosition;
-                for (int i = 0; i < otherFingerOffsets.Count; i++)
+                Vector currentHandDir = currentHand.Direction;
+                for (int i = 0; i < otherHand.Fingers.Count; i++)
                 {
-                    Vector currentOffset = currentHand.Fingers[i].TipPosition - currentHandCenter;
-
-                    //totalCloseness += currentOffset.Dot(difference);
+                    Finger otherFinger = otherHand.Fingers[i];
+                    Finger currentFinger = currentHand.Fingers[i];
+                    Vector otherOffset = otherFinger.Direction - otherHandDir;
+                    Vector currentOffset = currentFinger.Direction - currentHandDir;
+                    totalCloseness += currentOffset.Dot(otherOffset);
                 }
             }
-            
         }
-        print(totalCloseness);
         if (totalCloseness < 10)
             return true;
         else
