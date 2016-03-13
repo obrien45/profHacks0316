@@ -10,6 +10,7 @@ public class startGame : MonoBehaviour {
 	public Button creditsText;
 	public Button startText;
 	public Button exitText;
+	public Button returnToMenu;
 
 	void Start()
 		{
@@ -18,8 +19,9 @@ public class startGame : MonoBehaviour {
 			//exitText = exitText.GetComponent<Button> ();
 			//quitMenu = quitMenu.GetComponent<Canvas> ();
 			//creditsCanvas = creditsCanvas.GetComponent<Canvas> ();
-		quitMenu.enabled = false;
-		creditsCanvas.GetComponent<Canvas>().enabled = false;
+			quitMenu.enabled = false;
+			creditsCanvas.GetComponent<Canvas>().enabled = false;
+			returnToMenu.enabled = false;
 		}
 
 	public void ExitPress()
@@ -39,7 +41,14 @@ public class startGame : MonoBehaviour {
 	public void CreditsPressed()
 		{
 			creditsCanvas.enabled = true;
+			returnToMenu.enabled = true;
 		}
+
+	public void ReturnToMenu()
+	{
+			creditsCanvas.enabled = false;
+			NoPress ();
+	}
 
 	// Update is called once per frame
 
