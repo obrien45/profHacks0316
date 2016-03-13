@@ -37,6 +37,45 @@ public class GestureManager : MonoBehaviour
         return currentGesture;
     }
 
+    public float matchHands(Hand savedHand, Hand currentHand)
+    {
+        float angleThreshold = 0.4f;
+        float closeness = -1.0f;
+        Vector otherHandDir = savedHand.Direction;
+        Vector otherHandPos = savedHand.PalmPosition;
+        bool couldBeMatch = true;
+        Vector currentHandDir = currentHand.Direction;
+        Vector currentHandPos = currentHand.PalmPosition;
+        for (int i = 0; i < savedHand.Fingers.Count; i++)
+        {
+            Finger otherFinger = savedHand.Fingers[i];
+            Finger currentFinger = currentHand.Fingers[i];
+            float otherAngle = otherFinger.Direction.AngleTo(otherHandDir);
+            float currentAngle = currentFinger.Direction.AngleTo(currentHandDir);
+            Vector otherFingerPos = otherFinger.TipPosition;
+            Vector currentFingerPos = currentFinger.TipPosition;
+            float currentDist = currentFingerPos.DistanceTo(currentHandPos);
+            float otherDist = otherHandPos.DistanceTo(otherHandPos);
+            if (currentDist > 1.3 * otherDist)
+            {
+                couldBeMatch = false;
+            }
+            if (Mathf.Abs(otherAngle - currentAngle) > angleThreshold)
+            {
+                couldBeMatch = false;
+            }
+        }
+        if (couldBeMatch)
+        {
+            closeness = Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
+        }
+        else
+        {
+            closeness = -1.0f;
+        }
+        return closeness;
+    }
+
     float gestureMatch(Frame otherFrame)
     {
         float angleThreshold = 0.4f;
@@ -44,36 +83,95 @@ public class GestureManager : MonoBehaviour
         List<Hand> otherHands = otherFrame.Hands;
         List<Hand> currentHands = currentFrame.Hands;
         bool isMatch = false;
-        foreach (Hand otherHand in otherHands)
+        if (otherHands.Count == 1)
         {
-            //return a float that is closeness only if match passes
-            Vector otherHandDir = otherHand.Direction;
-            foreach (Hand currentHand in currentHands)
+            foreach(Hand currentHand in currentHands)
             {
-                bool couldBeMatch = true;
-                Vector currentHandDir = currentHand.Direction;
-                for (int i = 0; i < otherHand.Fingers.Count; i++)
+                float match = matchHands(otherHands[0], currentHand);
+                if(match != -1.0f)
+                    return match;
+
+            }
+            return -1.0f;
+            /*
+            return matchHands(otherHands[0], currentFrame)
+            foreach (Hand otherHand in otherHands)
+            {
+                //return a float that is closeness only if match passes
+                Vector otherHandDir = otherHand.Direction;
+                Vector otherHandPos = otherHand.PalmPosition;
+                foreach (Hand currentHand in currentHands)
                 {
-                    Finger otherFinger = otherHand.Fingers[i];
-                    Finger currentFinger = currentHand.Fingers[i];
-                    float otherAngle = otherFinger.Direction.AngleTo(otherHandDir);
-                    float currentAngle = currentFinger.Direction.AngleTo(currentHandDir);
-                    if (Mathf.Abs(otherAngle - currentAngle) > angleThreshold)
+                    bool couldBeMatch = true;
+                    Vector currentHandDir = currentHand.Direction;
+                    Vector currentHandPos = currentHand.PalmPosition;
+                    for (int i = 0; i < otherHand.Fingers.Count; i++)
                     {
-                        couldBeMatch = false;
+                        Finger otherFinger = otherHand.Fingers[i];
+                        Finger currentFinger = currentHand.Fingers[i];
+                        float otherAngle = otherFinger.Direction.AngleTo(otherHandDir);
+                        float currentAngle = currentFinger.Direction.AngleTo(currentHandDir);
+                        Vector otherFingerPos = otherFinger.TipPosition;
+                        Vector currentFingerPos = currentFinger.TipPosition;
+                        float currentDist = currentFingerPos.DistanceTo(currentHandPos);
+                        float otherDist = otherHandPos.DistanceTo(otherHandPos);
+                        if (currentDist > 1.3 * otherDist)
+                        {
+                            couldBeMatch = false;
+                        }
+                        if (Mathf.Abs(otherAngle - currentAngle) > angleThreshold)
+                        {
+                            couldBeMatch = false;
+                        }
+                    }
+                    if (couldBeMatch)
+                    {
+                        isMatch = true;
+                        closeness = Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
+                    }
+                    else
+                    {
+                        closeness = -Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
                     }
                 }
-                if(couldBeMatch)
+            }
+            return closeness;*/
+        }
+        else if (otherHands.Count == 2)
+        {
+            if (currentHands.Count == 2)
+            {
+
+                Hand currentHandOne = currentHands[0];
+                Hand currentHandTwo = currentHands[1];
+                Hand savedHandOne = otherHands[0];
+                Hand savedHandTwo = otherHands[1];
+                float firstHandMatch = matchHands(currentHandOne, savedHandOne;
+                if(firstHandMatch != -1)
                 {
-                    isMatch = true;
-                    closeness = Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
+                    float twoTwoHandMatch = matchHands(currentHandTwo, savedHandTwo);
+                    if(twoTwoHandMatch != -1)
+                    {
+                        return (twoTwoHandMatch + firstHandMatch)/2.0f;
+                    }
                 }else{
-                    closeness = -Mathf.Abs(otherHandDir.AngleTo(currentHandDir));
+                    float secondHandMatch = matchHands(currentHandTwo, savedHandOne);
+                    if(secondHandMatch != -1)
+                    {
+                        float twoTwoHandMatch = matchHands(currentHandOne, savedHandTwo);
+                        if(twoTwoHandMatch != -1)
+                        {
+                            return (twoTwoHandMatch + secondHandMatch )/2.0f;
+                        }
+                    }
                 }
             }
+            return -1;
         }
-        return closeness;
+        else
+            return -1;
     }
+    
 
     // Update is called once per frame
     void Update()
